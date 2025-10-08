@@ -46,7 +46,10 @@ const SignUp = () => {
                     placeholder="Joe Crash"
                     register={register}
                     error={errors.fullName}
-                    validation={{ required: 'Full name is required', minLength: 2 }}
+                    validation={{
+                        required: 'Full name is required',
+                        minLength: { value: 2, message: 'Name must be at least 2 characters' }
+                    }}
                 />
 
                 <InputField
@@ -55,7 +58,13 @@ const SignUp = () => {
                     placeholder="joe@joecrash.dev"
                     register={register}
                     error={errors.email}
-                    validation={{ required: 'Email address is required', pattern: /^\w+@\w+\.\w+$/, message: 'Email address is required' }}
+                    validation={{
+                        required: 'Email address is required',
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: 'Please enter a valid email address'
+                        }
+                    }}
                 />
 
                 <InputField
@@ -65,7 +74,27 @@ const SignUp = () => {
                     type="password"
                     register={register}
                     error={errors.password}
-                    validation={{ required: 'Password is required', minLength: 8 }}
+                    validation={{
+                        required: 'Password is required',
+                        minLength: { value: 8, message: 'Password must be at least 8 characters' },
+                        pattern: {
+                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+                            message: 'Password must include uppercase, lowercase, number, and special character'
+                        }
+                    }}
+                />
+
+                <InputField
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    placeholder="Re-enter your password"
+                    type="password"
+                    register={register}
+                    error={errors.confirmPassword}
+                    validation={{
+                        required: 'Please confirm your password',
+                        //validate: (value: string) => value === watch('password') || 'Passwords do not match'
+                    }}
                 />
 
                 <CountrySelectField

@@ -79,7 +79,7 @@ const SignUp = () => {
                         required: 'Password is required',
                         minLength: { value: 8, message: 'Password must be at least 8 characters' },
                         pattern: {
-                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
                             message: 'Password must include uppercase, lowercase, number, and special character'
                         }
                     }}

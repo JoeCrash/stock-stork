@@ -13,6 +13,7 @@ const SignUp = () => {
         register,
         handleSubmit,
         control,
+        watch,
         formState: { errors, isSubmitting },
     } = useForm<SignUpFormData>({
         defaultValues: {
@@ -93,7 +94,7 @@ const SignUp = () => {
                     error={errors.confirmPassword}
                     validation={{
                         required: 'Please confirm your password',
-                        //validate: (value: string) => value === watch('password') || 'Passwords do not match'
+                        validate: (value: string) => value === watch('password') || 'Passwords do not match'
                     }}
                 />
 

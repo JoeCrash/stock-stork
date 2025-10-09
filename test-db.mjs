@@ -10,7 +10,7 @@
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 const ENDPOINT = '/api/db';
-const TIMEOUT_MS = Number(process.env.TIMEOUT_MS || 10000);
+const TIMEOUT_MS = Number(process.env.TIMEOUT_MS) || 10000;
 
 async function tryApiHealthCheck() {
   const url = new URL(ENDPOINT, BASE_URL).toString();
@@ -78,7 +78,7 @@ async function tryDirectMongoPing() {
   const uri = await loadMongoUri();
   if (!uri) {
     console.error('[test:db] No MONGODB_URI found in environment or .env');
-    console.error('[test:db] Add MONGODB_URI to D:\\Apps\\tickerpilot\\.env and re-run.');
+    console.error(`[test:db] Add MONGODB_URI to ${process.cwd()}/.env and re-run.`);
     return false;
   }
   try {

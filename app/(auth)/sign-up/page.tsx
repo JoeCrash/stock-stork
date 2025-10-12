@@ -9,7 +9,6 @@ import {CountrySelectField} from "@/components/forms/CountrySelectField";
 import FooterLink from "@/components/forms/FooterLink";
 import {signUpWithEmail} from "@/lib/actions/auth.actions";
 import {useRouter} from "next/navigation";
-import {error} from "better-auth/api";
 import {toast} from "sonner";
 
 const SignUp = () => {

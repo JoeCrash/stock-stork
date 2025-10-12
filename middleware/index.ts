@@ -5,6 +5,9 @@ export async function middleware(request: NextRequest) {
     const sessionCookie = getSessionCookie(request);
 
     // Check cookie presence - prevents obviously unauthorized users
+    /* JMM 10/12/25 - Better-Auth recommends using this pattern so the sign-in page doesn't get blocked. However, I need
+    to review against attack vectors attempting to re-use old sessions/ forged cookies, possibly hardening by validating integrity,
+    signature or expiration. */
     if (!sessionCookie) {
         return NextResponse.redirect(new URL('/sign-in', request.url));
     }

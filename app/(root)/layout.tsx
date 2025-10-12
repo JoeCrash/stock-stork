@@ -4,7 +4,13 @@ import {headers} from "next/headers";
 import {redirect} from "next/navigation";
 
 const Layout = async ({ children }: { children : React.ReactNode }) => {
-    const session = await auth.api.getSession({ headers: await headers() });
+    let session;
+    try {
+        session = await auth.api.getSession({ headers: await headers() });
+    } catch (error) {
+        console.error("Failed to fetch session:", error);
+        redirect("/sign-in");
+    }
 
     if(!session?.user) redirect("/sign-in");
 

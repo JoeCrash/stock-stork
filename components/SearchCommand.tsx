@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react"
+import {useEffect, useRef, useState} from "react"
 import {CommandDialog, CommandEmpty, CommandInput, CommandList} from "@/components/ui/command"
 import {Button} from "@/components/ui/button";
 import {Loader2, TrendingUp} from "lucide-react";
@@ -13,6 +13,7 @@ export default function SearchCommand({renderAs = 'button', label = 'Add stock',
     const [searchTerm, setSearchTerm] = useState("")
     const [loading, setLoading] = useState(false)
     const [stocks, setStocks] = useState<StockWithWatchlistStatus[]>(initialStocks);
+    const pendingQueryRef = useRef<string>("");
 
     const isSearchMode = !!searchTerm.trim();
     const displayStocks = isSearchMode ? stocks : stocks?.slice(0, 10);
@@ -33,10 +34,17 @@ export default function SearchCommand({renderAs = 'button', label = 'Add stock',
 
         setLoading(true)
         try {
-            const results = await searchStocks(searchTerm.trim());
-            setStocks(results);
+            const currentTerm = searchTerm.trim();
+            pendingQueryRef.current = currentTerm;
+
+            const results = await searchStocks(currentTerm);
+            if (pendingQueryRef.current === currentTerm) {
+                setStocks(results);
+            }
         } catch {
-            setStocks([])
+            if (pendingQueryRef.current === searchTerm.trim()) {
+                setStocks([])
+            }
         } finally {
             setLoading(false)
         }

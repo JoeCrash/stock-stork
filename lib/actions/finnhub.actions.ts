@@ -40,14 +40,19 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
         const { from, to } = getDateRange(5);
 
         // Fetch news per symbol in parallel (cache for 5 minutes)
-        const perSymbolNews = await Promise.all(
+        const perSymbolNewsResults = await Promise.allSettled(
           cleanSymbols.map(async (sym) => {
             const url = `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(sym)}&from=${from}&to=${to}&token=${NEXT_PUBLIC_FINNHUB_API_KEY}`;
             const data = await fetchJSON<RawNewsArticle[]>(url, 300);
-            // Keep only valid articles
             return data.filter((a) => validateArticle(a));
           })
         );
+
+        const perSymbolNews = perSymbolNewsResults.map((result, index) => {
+          if (result.status === "fulfilled") return result.value;
+         console.warn(`company-news fetch failed for ${cleanSymbols[index]}`, result.reason);
+          return [];
+        });
 
         // Round-robin pick up to 6 articles
         const picks: MarketNewsArticle[] = [];

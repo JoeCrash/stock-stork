@@ -72,6 +72,12 @@ declare global {
     };
 
     type SearchCommandProps = {
+        renderAs?: 'button' | 'text';
+        label?: string;
+        initialStocks: StockWithWatchlistStatus[];
+    };
+
+    type SearchCommandProps = {
         open?: boolean;
         setOpen?: (open: boolean) => void;
         renderAs?: 'button' | 'text';
@@ -238,6 +244,11 @@ declare global {
         description: string;
         displaySymbol?: string;
         type: string;
+    };
+
+    type FinnhubSearchResponse = {
+        count: number;
+        result: FinnhubSearchResult[];
     };
 
     type FormInputProps = {
